@@ -7,28 +7,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useReterieveData } from "@/hooks/useReterieveData";
+import UserTableHeader from "./UserTableHeader";
+import UserTableRow from "./UserTableRow";
 
 const UserTable = () => {
+  const [clientDataList] = useReterieveData();
+  console.log("Client Data List:", clientDataList);
+
   return (
     <>
-      <h3>user Table</h3>
-      <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Invoice</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
+      <h3 className="text-lg text-center font-bold">user Table</h3>
+      <Table className="m-2 p-5">
+        <TableCaption>A list of client.</TableCaption>
+        <UserTableHeader />
         <TableBody>
-          <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Paid</TableCell>
-            <TableCell>Credit Card</TableCell>
-            <TableCell className="text-right">$250.00</TableCell>
-          </TableRow>
+          {clientDataList &&
+            clientDataList.map((user) => (
+              <UserTableRow key={user.id} user={user} />
+            ))}
         </TableBody>
       </Table>
     </>
