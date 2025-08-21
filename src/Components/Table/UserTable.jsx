@@ -7,27 +7,44 @@ import FilterModal from "../Filter/FilterModal";
 
 const UserTable = () => {
   const [clientDataList] = useReterieveData();
-
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedField, setSelectedField] = useState("name");
-  const [selectedDirection, setSelectedDirection] = useState("asc");
+  const [appliedSorts, setAppliedSorts] = useState([]);
   const [selectedSorts, setSelectedSorts] = useState([]);
 
   // Filtered/sorted data
   const sortedData = useMemo(() => {
     if (!clientDataList) return [];
-    const field = selectedField;
-    const direction = selectedDirection;
+    if (!appliedSorts.length) return clientDataList;
     return [...clientDataList].sort((a, b) => {
-      if (a[field] < b[field]) return direction === "asc" ? -1 : 1;
-      if (a[field] > b[field]) return direction === "asc" ? 1 : -1;
+      for (const sort of appliedSorts) {
+        const { field, direction } = sort;
+        let aValue = a[field];
+        let bValue = b[field];
+
+        // Handle number fields
+        if (field === "id") {
+          aValue = Number(aValue);
+          bValue = Number(bValue);
+        }
+
+        // Handle date fields
+        if (field === "createdAt" || field === "updatedAt") {
+          aValue = new Date(aValue);
+          bValue = new Date(bValue);
+        }
+
+        if (aValue < bValue) return direction === "asc" ? -1 : 1;
+        if (aValue > bValue) return direction === "asc" ? 1 : -1;
+      }
       return 0;
     });
-  }, [clientDataList, selectedField, selectedDirection]);
+  }, [clientDataList, appliedSorts]);
 
   // Modal handlers
-  const handleApply = () => setModalOpen(false);
-
+  const handleApply = () => {
+    setAppliedSorts(selectedSorts);
+    setModalOpen(false);
+  };
   return (
     <>
       <FilterModal

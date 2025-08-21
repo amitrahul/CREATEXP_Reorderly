@@ -21,7 +21,6 @@ const FilterModal = ({
   onApply,
 }) => {
   const [filterOptionsList] = useFilterOptions();
-  //   console.log("filterOptionsList", filterOptionsList);
 
   const handleToggle = (field, direction) => {
     setSelectedSorts((prev) => {
@@ -33,15 +32,24 @@ const FilterModal = ({
   const isSelected = (field, direction) =>
     selectedSorts.some((s) => s.field === field && s.direction === direction);
 
-  //   if (!open) return null;
+  const selectedCount = selectedSorts.length;
+  console.log("selectedSorts", selectedSorts);
 
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button variant="outline">
-            <FaFilter />
+          <Button
+            variant="outline"
+            className="relative w-40 h-10 flex items-center justify-center mb-4"
+          >
+            <FaFilter size={20} />
             Open Dialog
+            {selectedCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-yellow-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                {selectedCount}
+              </span>
+            )}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[600px]">
@@ -79,12 +87,26 @@ const FilterModal = ({
               ))}
           </div>
           <DialogFooter>
+            <Button
+              className={"bg-amber-600 text-white"}
+              variant="destructive"
+              type="button"
+              onClick={() => setSelectedSorts([])}
+            >
+              Clear
+            </Button>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit" onClick={onApply}>
-              Save changes
-            </Button>
+            <DialogClose asChild>
+              <Button
+                type="submit"
+                onClick={onApply}
+                className="bg-blue-500 text-white"
+              >
+                Save changes
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </form>
