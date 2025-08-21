@@ -5,7 +5,7 @@ export const useReterieveData = () => {
 
   useEffect(() => {
     import("../data/clientData").then((data) => {
-      setClientData(data.clientData);
+      setClientData(data.CLIENT_DATA);
     });
   }, []);
 
@@ -17,9 +17,21 @@ export const useTableHeader = () => {
 
   useEffect(() => {
     import("../data/TableHeaderData").then((data) => {
-      setTableHeader(data.tableHeader);
+      setTableHeader(data.TABLE_HEADER);
     });
   }, []);
 
   return [tableHeader];
+};
+
+export const useFilterOptions = () => {
+  const [filterOptions, setFilterOptions] = useState([]);
+
+  useEffect(() => {
+    import("../data/filterOptionData").then((filterData) => {
+      setFilterOptions(filterData.FILTER_OPTIONS);
+    });
+  });
+
+  return [filterOptions];
 };

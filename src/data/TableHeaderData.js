@@ -1,4 +1,4 @@
-export const tableHeader = {
+export const TABLE_HEADER = {
   id: "Id",
   name: "Name",
   email: "Email",
