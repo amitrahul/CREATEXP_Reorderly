@@ -57,17 +57,21 @@ const UserTable = () => {
         onApply={handleApply}
       />
 
-      <h3 className="text-lg text-center font-bold">user Table</h3>
-      <Table className="m-2 p-5">
-        <TableCaption>A list of client.</TableCaption>
-        <UserTableHeader />
-        <TableBody>
-          {sortedData &&
-            sortedData.map((user) => (
-              <UserTableRow key={user.id} user={user} />
-            ))}
-        </TableBody>
-      </Table>
+      <div className="w-full overflow-x-auto">
+        <h3 className="text-lg text-center font-bold">user Table</h3>
+        <div className="min-w-[600px] md:min-w-full">
+          <Table className="m-2 p-5">
+            <TableCaption>A list of client.</TableCaption>
+            <UserTableHeader />
+            <TableBody>
+              {sortedData &&
+                sortedData.map((user) => (
+                  <UserTableRow key={user.id} user={user} />
+                ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </>
   );
 };

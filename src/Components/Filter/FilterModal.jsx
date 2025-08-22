@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { FaFilter } from "react-icons/fa";
+import { FiArrowUp, FiArrowDown } from "react-icons/fi";
 import { useFilterOptions } from "@/hooks/useReterieveData";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const FilterModal = ({
   open,
@@ -21,7 +22,7 @@ const FilterModal = ({
   onApply,
 }) => {
   const [filterOptionsList] = useFilterOptions();
-  console.log("selectedSorts", selectedSorts);
+  const listRef = useRef(null);
 
   useEffect(() => {
     localStorage.setItem("selectedSorts", JSON.stringify(selectedSorts));
@@ -60,10 +61,13 @@ const FilterModal = ({
           <DialogHeader>
             <DialogTitle>Sort By</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4">
+          <div ref={listRef} className="grid gap-4">
             {filterOptionsList &&
               filterOptionsList.map((opt) => (
-                <div key={opt?.value} className="flex w-full flex-wrap gap-24">
+                <div
+                  key={opt?.value}
+                  className="flex w-full flex-wrap gap-24 transition-all duration-300 ease-in-out hover:scale-[1.01] hover:bg-amber-50 rounded"
+                >
                   <Badge variant="secondary" className="w-20">
                     {opt?.label}
                   </Badge>
@@ -73,9 +77,9 @@ const FilterModal = ({
                         key={option.value}
                         variant="outline"
                         className={
-                          isSelected(opt.value, option.value)
-                            ? "bg-green-500 text-white"
-                            : ""
+                          (isSelected(opt.value, option.value)
+                            ? "bg-green-500 text-white "
+                            : "") + " transition-all duration-200 ease-in-out"
                         }
                         onClick={(e) => {
                           e.preventDefault();
@@ -83,7 +87,10 @@ const FilterModal = ({
                         }}
                         type="button"
                       >
-                        {option.label}
+                        {option.label}{" "}
+                        {(option.value === "asc" && <FiArrowUp />) || (
+                          <FiArrowDown />
+                        )}
                       </Button>
                     ))}
                   </div>
