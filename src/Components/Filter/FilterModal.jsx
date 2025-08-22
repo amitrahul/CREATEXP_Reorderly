@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { FaFilter } from "react-icons/fa";
-
 import { useFilterOptions } from "@/hooks/useReterieveData";
+import { useEffect } from "react";
 
 const FilterModal = ({
   open,
@@ -21,6 +21,11 @@ const FilterModal = ({
   onApply,
 }) => {
   const [filterOptionsList] = useFilterOptions();
+  console.log("selectedSorts", selectedSorts);
+
+  useEffect(() => {
+    localStorage.setItem("selectedSorts", JSON.stringify(selectedSorts));
+  }, [selectedSorts]);
 
   const handleToggle = (field, direction) => {
     setSelectedSorts((prev) => {
@@ -33,7 +38,6 @@ const FilterModal = ({
     selectedSorts.some((s) => s.field === field && s.direction === direction);
 
   const selectedCount = selectedSorts.length;
-  console.log("selectedSorts", selectedSorts);
 
   return (
     <Dialog>
@@ -44,7 +48,7 @@ const FilterModal = ({
             className="relative w-40 h-10 flex items-center justify-center mb-4"
           >
             <FaFilter size={20} />
-            Open Dialog
+            Sort & Filter
             {selectedCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-yellow-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
                 {selectedCount}

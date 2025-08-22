@@ -9,8 +9,10 @@ const UserTable = () => {
   const [clientDataList] = useReterieveData();
   const [modalOpen, setModalOpen] = useState(false);
   const [appliedSorts, setAppliedSorts] = useState([]);
-  const [selectedSorts, setSelectedSorts] = useState([]);
-
+  const [selectedSorts, setSelectedSorts] = useState(() => {
+    const filteredItem = localStorage.getItem("selectedSorts");
+    return filteredItem ? JSON.parse(filteredItem) : [];
+  });
   // Filtered/sorted data
   const sortedData = useMemo(() => {
     if (!clientDataList) return [];
